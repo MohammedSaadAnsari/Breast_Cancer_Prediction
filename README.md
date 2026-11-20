@@ -1,27 +1,28 @@
-# Breast Cancer Prediction using Machine Learning
+# Breast Cancer Prediction Using Machine Learning
 
 ## Project Overview
 
-This project uses Machine Learning to classify breast cancer tumours as **Malignant** or **Benign** using features from the Breast Cancer Wisconsin dataset.
+This project uses Machine Learning to classify breast cancer tumours as **Malignant** or **Benign** using features from the Breast Cancer Wisconsin Diagnostic Dataset.
 
-The project includes data preprocessing, exploratory data analysis, model comparison, hyperparameter tuning, model evaluation, and a FastAPI application for predictions.
+The project covers the complete machine learning workflow, including data preprocessing, exploratory data analysis (EDA), model comparison, hyperparameter tuning, model evaluation, and deployment using a FastAPI application.
 
 **Disclaimer:** This is an educational machine learning project and is not intended for clinical diagnosis or medical decision-making.
 
 ## Problem Statement
 
-Early identification of malignant tumours is an important medical challenge. This project explores how machine learning can classify tumour characteristics using a labelled dataset.
+Early identification of malignant tumours is an important medical challenge. This project explores how machine learning algorithms can classify tumour characteristics using a labelled dataset.
 
 ## Dataset
 
-- Dataset: Breast Cancer Wisconsin Diagnostic Dataset
-- Source: Scikit-learn built-in dataset
-- Total records: 569
-- Input features: 30
-- Target classes: Malignant and Benign
-- Missing values: 0
+- **Dataset:** Breast Cancer Wisconsin Diagnostic Dataset
+- **Source:** Scikit-learn built-in dataset
+- **Total Records:** 569
+- **Input Features:** 30
+- **Target Classes:** Malignant and Benign
+- **Missing Values:** 0
 
-Target labels:
+### Target Labels
+
 - `0` = Malignant
 - `1` = Benign
 
@@ -40,14 +41,67 @@ Target labels:
 
 ## Machine Learning Models
 
-The following algorithms were compared:
+The following machine learning algorithms were trained and compared:
 
 1. Logistic Regression
 2. K-Nearest Neighbors (KNN)
 3. Support Vector Machine (SVM)
 4. Random Forest
 
-SVM was the leading model in the initial comparison. GridSearchCV was then used to tune its hyperparameters.
+SVM performed best in the initial model comparison. GridSearchCV was then used to optimize its hyperparameters using 5-fold cross-validation.
+
+## Model Performance
+
+### Best Model: Support Vector Machine (SVM)
+
+**Best Hyperparameters:**
+
+| Parameter | Value |
+|---|---|
+| C | 1 |
+| Kernel | RBF |
+| Gamma | Scale |
+| Cross-validation | 5-Fold |
+| Optimization Metric | Malignant Recall |
+
+### Hyperparameter Tuning Result
+
+- **Best Cross-Validation Malignant Recall:** 95.88%
+
+### Final Model Evaluation
+
+The tuned SVM model was evaluated on the held-out test dataset.
+
+| Evaluation Metric | Score |
+|---|---:|
+| Accuracy | 98.25% |
+| Malignant Precision | 97.62% |
+| Malignant Recall | 97.62% |
+| Malignant F1-Score | 97.62% |
+| Malignant ROC-AUC | 99.50% |
+
+### Confusion Matrix
+
+```text
+[[41  1]
+ [ 1 71]]
+```
+
+| Actual / Predicted | Malignant | Benign |
+|---|---:|---:|
+| Malignant | 41 | 1 |
+| Benign | 1 | 71 |
+
+The model correctly classified 112 out of 114 test samples.
+
+### Classification Report
+
+| Class | Precision | Recall | F1-Score | Support |
+|---|---:|---:|---:|---:|
+| Malignant | 0.98 | 0.98 | 0.98 | 42 |
+| Benign | 0.99 | 0.99 | 0.99 | 72 |
+
+**Note:** These results represent performance on one held-out test split and do not establish clinical reliability.
 
 ## Project Structure
 
@@ -86,12 +140,27 @@ Breast_Cancer_Prediction/
 
 ## Installation and Setup
 
-Clone the repository or open the project folder.
+Clone the repository:
 
-Create and activate a virtual environment:
+```powershell
+git clone https://github.com/MohammedSaadAnsari/Breast_Cancer_Prediction.git
+```
+
+Navigate to the project directory:
+
+```powershell
+cd Breast_Cancer_Prediction
+```
+
+Create a virtual environment:
 
 ```powershell
 python -m venv .venv
+```
+
+Activate the virtual environment:
+
+```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 .\.venv\Scripts\Activate.ps1
 ```
@@ -104,37 +173,37 @@ python -m pip install -r requirements.txt
 
 ## Run the Project
 
-Generate the dataset:
+### 1. Generate the Dataset
 
 ```powershell
 python src/preprocessing.py
 ```
 
-Train the initial model:
+### 2. Train the Initial Model
 
 ```powershell
 python src/train.py
 ```
 
-Compare machine learning models:
+### 3. Compare Machine Learning Models
 
 ```powershell
 python src/compare_models.py
 ```
 
-Tune the SVM model:
+### 4. Tune the SVM Model
 
 ```powershell
 python src/tune_model.py
 ```
 
-Evaluate the tuned model:
+### 5. Evaluate the Final Model
 
 ```powershell
 python src/evaluate_model.py
 ```
 
-Run a sample prediction:
+### 6. Run a Sample Prediction
 
 ```powershell
 python src/predict.py
@@ -142,19 +211,19 @@ python src/predict.py
 
 ## Run the FastAPI Application
 
-Start the server:
+Start the FastAPI server:
 
 ```powershell
 python -m uvicorn app.main:app --reload
 ```
 
-API base URL:
+**API Base URL:**
 
-`http://127.0.0.1:8000`
+http://127.0.0.1:8000
 
-Interactive API documentation:
+**Interactive API Documentation:**
 
-`http://127.0.0.1:8000/docs`
+http://127.0.0.1:8000/docs
 
 ### API Endpoints
 
@@ -167,39 +236,44 @@ The prediction endpoint accepts exactly 30 numerical feature values in the origi
 
 ## Run Tests
 
-Execute:
+Execute the following command:
 
 ```powershell
 python -m pytest tests/ -v
 ```
 
-Current test result: **3 tests passed**.
+**Test Results:** 3 tests passed.
+
+- Home endpoint test
+- Prediction endpoint test
+- Invalid prediction input test
 
 ## Project Learning Outcomes
 
 - Understanding an end-to-end machine learning workflow.
-- Performing data preprocessing and EDA.
+- Performing data preprocessing and exploratory data analysis.
 - Training and comparing classification algorithms.
 - Applying GridSearchCV for hyperparameter tuning.
-- Evaluating classification models.
-- Saving and loading trained models with Joblib.
-- Building REST APIs with FastAPI.
+- Evaluating classification models using performance metrics.
+- Saving and loading trained models using Joblib.
+- Building REST APIs using FastAPI.
 - Testing APIs using Pytest.
 
 ## Future Improvements
 
-- Add a user-friendly frontend.
+- Develop a user-friendly frontend.
 - Add model monitoring and logging.
 - Improve validation and deployment.
 - Explore additional classification algorithms.
-- Evaluate performance on suitable external validation data.
+- Evaluate model performance on suitable external validation datasets.
 
 ## Author
 
 **Mohammed Saad Ansari**
 
-GitHub: [MohammedSaadAnsari](https://github.com/MohammedSaadAnsari)
+- GitHub: [MohammedSaadAnsari](https://github.com/MohammedSaadAnsari)
+- Project Repository: [Breast Cancer Prediction](https://github.com/MohammedSaadAnsari/Breast_Cancer_Prediction)
 
 ---
 
-*This project was developed for educational and portfolio purposes.*
+**This project was developed for educational and machine learning portfolio purposes only. It is not a clinically validated medical diagnostic system.**
